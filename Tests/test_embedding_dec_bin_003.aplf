@@ -1,0 +1,6 @@
+test_decimal_to_binary_003 ← {
+    ⍝ 4 Decimal to binary integer 1 0 0
+    result ← decimal_to_binary 4 
+    'Test: The result here should be 1 0 0 ' ⊢ 1 0 0 Assert result:
+    ''
+}

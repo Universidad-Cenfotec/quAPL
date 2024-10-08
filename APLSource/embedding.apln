@@ -1,0 +1,82 @@
+:Namespace embedding
+
+binary_to_quantum_state ← {
+    ⍝ Convert binary number to a quantum state.
+    ⍝ ⍵: binary number as a vector.
+    ⍝ Return a vector state with the qubit representation.
+    ⍝ REVIEW  WHICH ONE IS THE MOST REPRESENTATIVE QUBIT
+    ⍝ Apply a reverse and then apply the function to each element in the binary number   result ← f ¨ ⌽ ⍵  
+    
+    ⍝ If the number is zero, then init the qubit in a ground state otherwise the qubit will be in excited state
+    f ← {⍵ = 0: sng.q0 ⋄ ⍵ = 1: sng.q1}   
+    ⍝ Number of qubits required 
+    num_qubits  ← ⊃ ⍴ ⍵        
+    ⍝ Generate the qubits
+    qubits ← f ¨ ⍵
+    ⍝ Quantum register 
+    register ← circuit.reg num_qubits
+    ⍝ Mapping qubits to the quantum register 
+    register[;2] ← qubits    
+    ⍝ Return the vector state 
+    circuit.thread_reg register
+}
+
+decimal_to_binary ← {
+    ⍝ Convert a no negative integer to binary number. 
+    ⍝ ⍵: takes a decimal number and converted to binary representation. e. g. 34  
+    ⍝ Returns the binary number 
+    bits ← ⌈/ (1 (⌈ 2⍟(⍵ + 1)) )
+    ⍝ Appy the mask to the digits. This return a vector with the requiered number of digits.
+    mask ← bits ⍴ 2
+    ⍝ Encode to binary
+    binary ← mask  ⊤ ⍵
+    binary
+}
+
+decimal_to_quantum_state ← {
+    ⍝ Basic Enconding algorithm: that convert a no negative integer to binary. 
+    ⍝ ⍵: takes a decimal number and converted to binary representation. e. g. 34  
+    ⍝ Returns the vector state with the qubit representation.
+    binary_number ← decimal_to_binary ⍵
+    vs ← binary_to_quantum_state binary_number  
+    vs
+}
+
+quantum_associative_memory ← {
+    ⍝ Quantum Associative Memory Quam:  Takes n binary numbers and converts to a quantum register
+    ⍝ ⍵: a collection of binary numbers. E. g. (0 1 0) (0 1 0) (0 1 1 1) 
+    ⍝ Return a vector state 
+    ⍝ Validate if the vector entered has different length
+    max_length ← ⌈/ ≢¨ ⍵
+    padded_vector ←  { (max_length - ≢ ⍵) ≠ 0:  (((⊃ (max_length - ≢ ⍵  )) ⍴ 0) , ⍵)  ⋄  (max_length - ≢ ⍵) = 0: ⍵    } ¨ ⍵
+    result ← binary_to_quantum_state ¨ padded_vector
+    ⍝  Calculate the number of states
+    num_states ← ⍴ padded_vector
+    ⍝  Calculate amplitudes of each state 1/sqrt n 
+    ⊃  (÷num_states*÷2)× +/, result
+}
+
+
+
+amplitude_embedding_encoding ← { 
+    ⍝ Amplitud encoding:  Takes a collection of numbers and return a nomalized vector state 
+    ⍝ Info https://pennylane.ai/qml/glossary/quantum_embedding/
+    ⍝ ⍵: collection of  numbers. E. g. ( 1.0, 0.0,¯5.5, 0.0 ) 
+    ⍝ return a vector state 
+   
+    ⍝ Determine the number of qubits required
+    qubits ← ⊃ ⌈2 ⍟ ⍴ ⍵
+    ⍝ Length of the vector  
+    length ← ≢ ⍵ 
+    _pad ← ((2*qubits) - length) ⍴ 0
+    pad ← { _pad ≢  ⍬: ⍵ , _pad ⋄ _pad ≡ ⍬: ⍵ } ⍵   
+    ⍝ Determine the normalization constant
+    constant_norm ← (+/ pad*2 )*÷2
+    vec ← pad ÷ constant_norm
+    vec_vertical ← (≢ vec) 1 ⍴ vec
+    vec_vertical
+}
+
+
+:EndNamespace
+

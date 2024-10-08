@@ -1,0 +1,12 @@
+amplitud_encode_normalization_002 ← {
+    ⍝ Test if the vector state is normalized in case that everything is zero (special case)
+    ⍝ The sum of the squares of the vector's entries must be equal to 1
+    result ← amplitud_embedding_encoding ( 0.0, 0.0, 0.0, 0.0 )  ⍝ Generate the quantum vector state
+    norm ←  +/ , result*2  ⍝ Get the norm    
+    'Test: Verify that the sum of the squares of the vectors entries must be equal to 1' ⊢ 1 Assert norm:
+    ''
+}
+
+
+
+
