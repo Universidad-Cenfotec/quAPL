@@ -56,8 +56,6 @@ quantum_associative_memory ← {
     ⊃  (÷num_states*÷2)× +/, result
 }
 
-
-
 amplitude_embedding_encoding ← { 
     ⍝ Amplitud encoding:  Takes a collection of numbers and return a nomalized vector state 
     ⍝ Info https://pennylane.ai/qml/glossary/quantum_embedding/
@@ -77,6 +75,29 @@ amplitude_embedding_encoding ← {
     vec_vertical
 }
 
+angle_encoding ← { 
+    ⍝ Angle encoding
+    ⍝ ⍺: rotation gate rx , rz, ry 
+    ⍝ ⍵: x data to be encoding (1 2 3 4) 
+    ⍝ return a vector state 
+    ⍝ https://docs.pennylane.ai/en/stable/code/api/pennylane.AngleEmbedding.html
+
+    qubits ← ≢ ⍵
+    ⍝ Create a quantum register
+    reg←circuit.reg qubits
+
+    rotations  ← ⍺ { ⍺ ≡ 'rx' : (gates.Rx¨⍵)  ⋄ ⍺ ≡ 'ry' : (gates.Ry¨⍵)  ⋄ ⍺ ≡ 'rz' : (gates.Rz¨⍵) } ⍵
+    ⍝ Apply the rotations to each qubit 
+    apply_gate ← {  
+        vector ←   ⍵
+        gate ← ⊃ vector[1]
+        state ←  ⊃ vector[2]
+        result ← gate +.×  state
+        result
+    }
+    vector ← (⊂ ¨ rotations) ,¨ (⊂ ¨ reg[;2]) 
+    apply_gate ¨ vector
+}
 
 :EndNamespace
 
