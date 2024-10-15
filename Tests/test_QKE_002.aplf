@@ -1,0 +1,8 @@
+test_qke_002 ← {
+    
+    qke ← (0 0) #.quapl.lib._QKE_ (0 0) ⍝ Generate the quantum vector state
+    qke ←  (⊃¨ qke)
+    res ← (⊂ ¨ 1 1)
+    'Test: Verify that the sum of the result is equal to 1' ⊢ res Assert qke:
+    ''
+}

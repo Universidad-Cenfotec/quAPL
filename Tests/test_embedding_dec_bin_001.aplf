@@ -1,6 +1,6 @@
 test_decimal_to_binary_001 ← {
     ⍝ 1 in decimal to binary is 1
-    result ← decimal_to_binary 1 ⍝ Generate the quantum vector state
+    result ← #.quapl.embedding.decimal_to_binary 1 ⍝ Generate the quantum vector state
     'Test: The result here should be 1 ' ⊢ 1 Assert result:
     ''
 }

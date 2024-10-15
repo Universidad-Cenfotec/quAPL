@@ -1,6 +1,6 @@
 decimal_to_quantum_state_001 ← {
     ⍝ 4 in decimal to vector state
-    result ← decimal_to_quantum_state 4 ⍝ Generate the quantum vector state
+    result ← #.quapl.embedding.decimal_to_quantum_state 4 ⍝ Generate the quantum vector state
     'Test: The result here should be 1 ' ⊢ 1 0 0 0 Assert , result:
     ''
 }

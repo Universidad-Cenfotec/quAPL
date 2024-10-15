@@ -1,6 +1,6 @@
 quam_001 ← {
     ⍝ Test the return value
-    result ← quantum_associative_memory (0 0) (0 1) ⍝ Generate the quantum vector state
+    result ← #.quapl.embedding.quantum_associative_memory (0 0) (0 1) ⍝ Generate the quantum vector state
     'Test: The result here should be 1 ' ⊢   ((1÷2*÷2) (1÷2*÷2) 0 0) Assert , result:
     ''
 }

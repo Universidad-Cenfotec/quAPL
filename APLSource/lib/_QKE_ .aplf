@@ -1,0 +1,25 @@
+_QKE_ ← {
+     ⍝ Quantum Kernel Estimator
+     ⍝ ⍺: Takes a vector of numbers
+     ⍝ ⍵: Takes a vector of numbers
+     ⍝ Returns a vector of numbers
+     ⍝ https://pennylane.ai/qml/demos/tutorial_kernel_based_training/
+     ⍝ κ(x,x′)=|⟨ϕ(y)|ϕ(x)⟩|**2
+     ⍝ angle_emb ← #.quaple.embedding.angle_embedding_encoding   
+     ⍝ Verify same length
+     x ← 'ry' angle_embedding_encoding ⍵
+     y ← 'ry' angle_embedding_encoding ⍺
+     y1 ← mlt.bra  ¨ y
+
+     apply_gate ← {  
+        vector ←   ⍵
+        bra ← ⊃ vector[1]
+        ket ←  ⊃ vector[2]
+        result ← (bra +.×  ket)*2
+        result
+    }
+    vector ← (⊂ ¨ y1) ,¨ (⊂ ¨ x) 
+    apply_gate ¨ vector
+
+}
+

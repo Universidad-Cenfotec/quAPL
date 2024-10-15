@@ -75,7 +75,7 @@ amplitude_embedding_encoding ← {
     vec_vertical
 }
 
-angle_encoding ← { 
+angle_embedding_encoding ← { 
     ⍝ Angle encoding
     ⍝ ⍺: rotation gate rx , rz, ry 
     ⍝ ⍵: x data to be encoding (1 2 3 4) 
@@ -98,6 +98,17 @@ angle_encoding ← {
     vector ← (⊂ ¨ rotations) ,¨ (⊂ ¨ reg[;2]) 
     apply_gate ¨ vector
 }
+
+
+is_hermitian ← {
+    ⍝ Test  a ← 2 2 ⍴ 3 (2+0J1)  (2-0J1) 1 Verify squared matrix 
+    (⊃1↑⍴⍵) ≢  (2⌷⍴⍵): 0
+    ⍝ Verify if the matrix is equal to their conjugate transpose
+    ⍵ ≡ mlt.dagger  ⍵
+}
+
+
+
 
 :EndNamespace
 
