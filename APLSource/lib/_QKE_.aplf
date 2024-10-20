@@ -7,9 +7,9 @@ _QKE_ ← {
      ⍝ κ(x,x′)=|⟨ϕ(y)|ϕ(x)⟩|**2
      ⍝ angle_emb ← #.quaple.embedding.angle_embedding_encoding   
      ⍝ Verify same length
-     x ← 'ry' angle_embedding_encoding ⍵
-     y ← 'ry' angle_embedding_encoding ⍺
-     y1 ← mlt.bra  ¨ y
+     x ← 'ry' #.quapl.embedding.angle_embedding_encoding ⍵
+     y ← 'ry' #.quapl.embedding.angle_embedding_encoding ⍺
+     y1 ← #.quapl.mlt.bra  ¨ y
 
      apply_gate ← {  
         vector ←   ⍵

@@ -8,23 +8,23 @@ binary_to_quantum_state ← {
     ⍝ Apply a reverse and then apply the function to each element in the binary number   result ← f ¨ ⌽ ⍵  
     
     ⍝ If the number is zero, then init the qubit in a ground state otherwise the qubit will be in excited state
-    f ← {⍵ = 0: sng.q0 ⋄ ⍵ = 1: sng.q1}   
+    f ← {⍵ = 0: #.quapl.sng.q0 ⋄ ⍵ = 1: #.quapl.sng.q1}   
     ⍝ Number of qubits required 
     num_qubits  ← ⊃ ⍴ ⍵        
     ⍝ Generate the qubits
     qubits ← f ¨ ⍵
     ⍝ Quantum register 
-    register ← circuit.reg num_qubits
+    register ← #.quapl.circuit.reg num_qubits
     ⍝ Mapping qubits to the quantum register 
     register[;2] ← qubits    
     ⍝ Return the vector state 
-    circuit.thread_reg register
+    #.quapl.circuit.thread_reg register
 }
 
 decimal_to_binary ← {
     ⍝ Convert a no negative integer to binary number. 
     ⍝ ⍵: takes a decimal number and converted to binary representation. e. g. 34  
-    ⍝ Returns the binary number 
+    ⍝ Returns a binary number 
     bits ← ⌈/ (1 (⌈ 2⍟(⍵ + 1)) )
     ⍝ Appy the mask to the digits. This return a vector with the requiered number of digits.
     mask ← bits ⍴ 2
@@ -84,9 +84,9 @@ angle_embedding_encoding ← {
 
     qubits ← ≢ ⍵
     ⍝ Create a quantum register
-    reg←circuit.reg qubits
+    reg← #.quapl.circuit.reg qubits
 
-    rotations  ← ⍺ { ⍺ ≡ 'rx' : (gates.Rx¨⍵)  ⋄ ⍺ ≡ 'ry' : (gates.Ry¨⍵)  ⋄ ⍺ ≡ 'rz' : (gates.Rz¨⍵) } ⍵
+    rotations  ← ⍺ { ⍺ ≡ 'rx' : (#.quapl.gates.Rx¨⍵)  ⋄ ⍺ ≡ 'ry' : (#.quapl.gates.Ry¨⍵)  ⋄ ⍺ ≡ 'rz' : (#.quapl.gates.Rz¨⍵) } ⍵
     ⍝ Apply the rotations to each qubit 
     apply_gate ← {  
         vector ←   ⍵
@@ -101,12 +101,23 @@ angle_embedding_encoding ← {
 
 
 is_hermitian ← {
-    ⍝ Test  a ← 2 2 ⍴ 3 (2+0J1)  (2-0J1) 1 Verify squared matrix 
+    ⍝ Verify if an input matrix is hermitian
+    ⍝ ⍵: matrix
+    ⍝ returns: 1 if is hermitian, 0 otherwise
     (⊃1↑⍴⍵) ≢  (2⌷⍴⍵): 0
-    ⍝ Verify if the matrix is equal to their conjugate transpose
-    ⍵ ≡ mlt.dagger  ⍵
+    ⍵ ≡ #.quapl.mlt.dagger  ⍵
 }
 
+
+norm_square ← {
+    ⍝ Conjugate of a vector
+    ⍝ ⍵: matrix
+    ⍝ returns inner product
+    transpose  ←  (#.quapl.mlt.dagger ¨ ⍵)
+    vector ← (⊂ ¨ transpose) ,¨ (⊂ ¨ ⍵) 
+    apply_gate ← {  (⊃ ⍵[1]) +.× (⊃ ⍵[2])  }
+    apply_gate ¨ vector
+}
 
 
 

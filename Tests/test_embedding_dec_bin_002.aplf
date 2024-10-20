@@ -1,7 +1,7 @@
 test_decimal_to_binary_002 ← {
     ⍝ 0 Decimal to binary is 0
     result ← #.quapl.embedding.decimal_to_binary 0 
-    'Test: The result here should be 0 ' ⊢ 0 Assert result:
+    'Test: The result here should be 0 ' ⊢ 0 Assert  ⊃ result:
     ''
 }
 

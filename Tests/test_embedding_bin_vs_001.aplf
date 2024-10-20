@@ -2,9 +2,8 @@ test_binary_to_quantum_state_001 ← {
     ⍝ Verify the result of the binary_to_quantum_state
     ⍝ Verify result
     ⍝ Example: 110 → {qubit1, qubit1, qubit0}
-    correct_result ← ⊃ #.quapl.mlt.kpr/ (sng.q1 sng.q1 sng.q0)
+    correct_result ← ⊃ #.quapl.mlt.kpr/ (#.quapl.sng.q1 #.quapl.sng.q1 #.quapl.sng.q0)
     result ← #.quapl.embedding.binary_to_quantum_state 1 1 0
-    result
     'Basic test to convert binary to quantum state' ⊢ correct_result Assert result:
     ''
 }
