@@ -1,0 +1,7 @@
+test_is_hermitian_001 ← {
+    ⍝ Test case the conjugate transpose should be igual to itself
+    matrix ← 2 2 ⍴ (1 2+0J1 2-0J1 3)
+    res ← #.quapl.embedding.is_hermitian matrix
+    'Test: Verify if the matrix 2x2 is Hermitian' ⊢ 1 Assert res:
+    ''
+}

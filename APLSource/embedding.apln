@@ -120,6 +120,34 @@ norm_square ← {
 }
 
 
+convert_to_helmitian ← {    
+    ⍝ Get a matrix and convert it to a helmitian matrix
+    ⍝ ⍵: matrix nxm
+    ⍝ return a Helmitian matrix
+    transpose ← #.quapl.mlt.dagger ⍵ 
+    n ← ⊃⍴ ⍵ 
+    m ← ⊃⍴ transpose
+    z1 ← (n n ⍴ 0 )  ⍝ z1: nxn
+    z2 ← (m m ⍴ 0)    ⍝ z2: mxm  
+    (z1 , ⍵) ⍪ (transpose , z2)
+}
+
+
+matrix_embedding_encoding ← {
+    ⍝ Get a matrix and encode to a hemiltean. ()
+    ⍝ ⍵: matrix nxm
+    ⍝ return a time evolution operator for an arbitrary Hamiltonian. 
+    ⍝ is_hermitian
+    H ← { is_hermitian ⍵ : ⍵  
+          convert_to_helmitian ⍵  
+    } ⍵
+    i ← ¯1×0J1
+    t ← 0.5 ⍝ Validate this number or pass through parameter
+    U ← (*1)*(i×H×t)
+    U
+}
+
+
 
 :EndNamespace
 
