@@ -121,7 +121,7 @@ norm_square ← {
 
 
 convert_to_helmitian ← {    
-    ⍝ Get a matrix and convert it to a helmitian matrix
+    ⍝ Get a matrix and convert it to a helmitian matrix (should be a square matrix)
     ⍝ ⍵: matrix nxm
     ⍝ return a Helmitian matrix
     transpose ← #.quapl.mlt.dagger ⍵ 

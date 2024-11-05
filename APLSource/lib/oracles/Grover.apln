@@ -1,0 +1,24 @@
+:Namespace Grover
+    ⍝ Namespace containing all of the oracles used for the Grover algorithm.
+    phase ← {
+        ⍝ ⍵ vector state
+        ⍝ ⍺ element to find example 1 0 1
+        n_qubits ← (2⍟1⌷⍴⍵)
+        list ← ⍳n_qubits
+        apply ← {           
+            stg_ctrl ← ( ((list)-1) ({⍵=0:#.quapl.gates.X ⋄ ⍵=1:#.quapl.gates.I }¨ ⍺ ) )
+            stg_ctrl stage ⍵
+        }        
+        res ← ⍺ apply ⍵
+        ⍝ creating ctrl z gate
+        cz ← (n_qubits-1) #.quapl.gates.gCTR (#.quapl.gates.Z) 
+        res  ← cz +.× res ⍝  ACA NO SUPE COMO APLICAR EL STAGE NO ME SIRVIO
+        res ← ⍺ apply res
+        res
+    }
+
+
+
+
+
+:EndNamespace
