@@ -14,8 +14,7 @@ _GROVER_ ← {
     ⍝phase ← #.quapl.oracles.Grover.phase
     
     n_qubits ← (2⍟1⌷⍴⍵)
-    num_iter ← ⌈((○1÷4) × n_qubits*0.5) 
-    
+    num_iter ←   ⌊((○1÷4) × (2*n_qubits)*0.5)     
     qubits ← ⍳n_qubits
     qubits_index ← (⍳n_qubits)-1
 
@@ -48,7 +47,7 @@ _GROVER_ ← {
         0 = 3⊃⍵: 1⊃⍵
         (mid_state qubits num_iter) ← (1⊃⍵) (2⊃⍵) ((3⊃⍵) - 1)
         mid_state ← ⍺ grover_iter (mid_state qubits)    
-        ⍺ grover_rec (mid_state qubits num_iter ) 
+        ⍺ ∇ (mid_state qubits num_iter ) 
     }
 
     ⍺ grover_rec (mid_state qubits num_iter) 

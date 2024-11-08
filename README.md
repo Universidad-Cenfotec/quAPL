@@ -50,20 +50,3 @@ This work also benefits from advice and contributions of talented individuals li
 
 * Richard Park, Dyalog APL
 * Aaron Hsu, Dyalog APL
-
-
-### Set up 
-#### Run on Dyalog
-
-]CIDER.OpenProject  "C:\Users\panch\Documents\QUANTUM_COMPUTING\QAPL_FORK\quAPL" -alias=quapl
-
-sng ← #.quapl.sng
-mlt ← #.quapl.mlt
-gates ← #.quapl.gates
-circuit ← #.quapl.circuit 
-show ← #.quapl.show
-msmt ← #.quapl.measurement
-
-
-#### Run tests
-]DTest Tests

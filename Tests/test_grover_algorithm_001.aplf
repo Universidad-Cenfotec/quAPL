@@ -1,0 +1,11 @@
+grover_normalized_001 ← {
+    ⍝ Test if the vector state is normalized
+    ⍝ The sum of the squares of the vector's entries must be equal to 1
+
+    reg3← #.quapl.circuit.reg 3
+    vs ←  #.quapl.circuit.thread_reg reg3
+    result ← (⊂ (1 0 0) )   #.quapl._GROVER_ vs ⍝ Generate the quantum vector state
+    norm ←  +/ , result*2  ⍝ Get the norm
+    'Test: Verify that the sum of the squares of the vectors entries must be equal to 1' ⊢ 1 Assert norm:
+    ''
+}
