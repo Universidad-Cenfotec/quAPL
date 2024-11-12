@@ -2,34 +2,35 @@ _GROVER_ ← {
     ⍝ Grover algorithm
     ⍝ Takes a vector state in the 0 state (all qubits are in the 0 states).
     ⍝ Applies the algorithm with the passed oracle and returns the vector state without being measured.
-
     ⍝ ⍵: Initial vector state in the 0 state.
-    ⍝ ⍺: Element to find in a list form. For example (0 0 0)
+    ⍝ ⍺⍺: Oracle to be used in the Grover algorithm.
     X ← #.quapl.gates.X
     H ← #.quapl.gates.H
     I ← #.quapl.gates.I
     CNOT ← #.quapl.gates.CNOT
     SWAP ← #.quapl.gates.SWAP
     stage ← #.quapl.circuit.stage
-    ⍝phase ← #.quapl.oracles.Grover.phase
-    
-    n_qubits ← (2⍟1⌷⍴⍵)
+    ⍝ phase ← #.quapl.oracles.Grover.phase
+    vs ← 1⊃⍵
+    search_elements ← 2⊃⍵
+    n_qubits ← (2⍟1⌷⍴vs)
     num_iter ←   ⌊((○1÷4) × (2*n_qubits)*0.5)     
     qubits ← ⍳n_qubits
     qubits_index ← (⍳n_qubits)-1
-
     ⍝ Uniform superposition 
     stg_ctrl ← ((qubits_index) ({H}¨qubits))    
-    mid_state ← stg_ctrl stage ⍵
+    mid_state ← stg_ctrl stage vs    
     
-    ⍝ necesito el alpha el mid state qubits 
+    ⍝ mid state qubits 
     grover_iter ← {
+        0 = 3⊃⍵: 1⊃⍵
         mid_state ← 1⊃⍵
-        qubits ← 2⊃⍵           
-        qubits_index ← (qubits)-1        
+        qubits ← 2⊃⍵              
+        qubits_index ← (qubits)-1   
+        search_elements ← 4⊃⍵ 
 
         ⍝ Applying phase oracle to the vector state 
-        mid_state ← ⍺ phase mid_state        
+        mid_state ← search_elements ⍺⍺  mid_state        
 
         ⍝ Applying difusser to the vector state
         mid_state ← ((qubits_index) ({H}¨qubits))  stage  mid_state
@@ -39,18 +40,13 @@ _GROVER_ ← {
         mid_state  ← cx +.× mid_state
         mid_state ← ((qubits_index) (({I}¨( ¯1↓(qubits))) , ⊂H ) ) stage mid_state       
         mid_state ← ((qubits_index) ({X}¨qubits))  stage mid_state
-        mid_state ← ((qubits_index) ({H}¨qubits)) stage mid_state
-        mid_state
-     } 
-
-    grover_rec ← {
-        0 = 3⊃⍵: 1⊃⍵
-        (mid_state qubits num_iter) ← (1⊃⍵) (2⊃⍵) ((3⊃⍵) - 1)
-        mid_state ← ⍺ grover_iter (mid_state qubits)    
-        ⍺ ∇ (mid_state qubits num_iter ) 
-    }
-
-    ⍺ grover_rec (mid_state qubits num_iter) 
-
+        mid_state ← ((qubits_index) ({H}¨qubits)) stage mid_state        
+        num_iter ← ((3⊃⍵) - 1)         
+        ⍺⍺ grover_iter (mid_state qubits num_iter search_elements ) 
+    }     
+    ⍺⍺ grover_iter (mid_state qubits num_iter search_elements) 
 }
+
+
+
 

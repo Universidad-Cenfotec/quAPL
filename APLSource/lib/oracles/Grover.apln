@@ -1,26 +1,4 @@
-:Namespace Grover
-    ⍝ Namespace containing all of the oracles used for the Grover algorithm.
-    phase_one ← {
-        ⍝ ⍵: vector state
-        ⍝ ⍺: list of lists with the elements to find, e.g., ((1 0 1) (1 0 0))
-
-        n_qubits ← (2⍟1⌷⍴⍵)
-        list ← ⍳n_qubits
-        apply ← {           
-            stg_ctrl ← ( ((list)-1) ({⍵=0:#.quapl.gates.X ⋄ ⍵=1:#.quapl.gates.I }¨ ⍺ ) )
-            stg_ctrl stage ⍵
-        }        
-        res ← ⍺ apply ⍵
-        ⍝ creating ctrl z gate
-        cz ← (n_qubits-1) #.quapl.gates.gCTR (#.quapl.gates.Z) 
-        res  ← cz +.× res ⍝  ACA NO SUPE COMO APLICAR EL STAGE NO ME SIRVIO
-        res ← ⍺ apply res
-        res
-    }
-
-
-
-    ⍝ Namespace containing all of the oracles used for the Grover algorithm.
+:Namespace GROVER 
     phase ← {
         ⍝ ⍵: vector state
         ⍝ ⍺: list of lists with the elements to find, e.g., ((1 0 1) (1 0 0))
@@ -29,18 +7,15 @@
             a ← 1↓⍺
             n_qubits ← (2⍟1⌷⍴⍵)
             qubits_index  ← (⍳n_qubits)-1
-
             apply ← {     
                 (qubits_index vs ) ← (1⊃⍵) (2⊃⍵)
                 stg_ctrl ← ((qubits_index) ({⍵=0:#.quapl.gates.X ⋄ ⍵=1:#.quapl.gates.I }¨ x ) )
-                stg_ctrl stage vs
-            }  
-            
+                stg_ctrl #.quapl.circuit.stage vs
+            }              
             res ← x apply (qubits_index ⍵)
             cz ← (n_qubits-1) #.quapl.gates.gCTR (#.quapl.gates.Z) 
             res  ← cz +.× res 
             res ← x apply   (qubits_index res)
-
             (⍴a)=0: res
             a ∇ res
         } 
