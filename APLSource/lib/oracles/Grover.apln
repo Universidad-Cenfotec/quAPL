@@ -1,7 +1,7 @@
 :Namespace GROVER 
     phase ← {
         ⍝ ⍵: vector state
-        ⍝ ⍺: list of lists with the elements to find, e.g., ((1 0 1) (1 0 0))
+        ⍝ ⍺: list of lists with the elements to find, e.g., ((1 0 1) (1 0 0)) phase vs
         iter ← {
             x ← ⊃ 1↑⍺
             a ← 1↓⍺
