@@ -1,0 +1,11 @@
+test_swap_test_001 ← {    
+    reg3←#.quapl.circuit.reg 3
+    reg3[2;2]←⊂ #.quapl.gates.H +.× #.quapl.sng.q0
+    reg3[3;2]←⊂ #.quapl.gates.H +.× #.quapl.sng.q0
+    vs ← #.quapl.circuit.thread_reg reg3     
+    result ← #.quapl.lib._SWAP_TEST_ vs
+    reg ← #.quapl.circuit.unthread_vs result
+    'Test: ' ⊢ #.quapl.sng.q0 Assert (⊃reg[1;2]) :
+    ''
+}
+

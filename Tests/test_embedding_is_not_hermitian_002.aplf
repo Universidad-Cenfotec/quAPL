@@ -1,0 +1,5 @@
+test_is_not_hermitian_002 ← {    
+    result ← #.quapl.embedding.is_hermitian  (2 2 ⍴  (2+0J1) 5 (2-0J1) 3)
+    'Verifying if the matrix is not hermitian' ⊢ 0 Assert result:
+    ''
+}
