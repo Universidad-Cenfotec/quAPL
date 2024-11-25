@@ -2,7 +2,7 @@ _SWAP_TEST_ ← {
     ⍝ SWAP TEST
     ⍝ This function implements the SWAP Test to compare the similarity between two quantum states.
     ⍝ Parameters:
-    ⍝ ⍵: Initial vector state in the 0 state (quantum state input).
+    ⍝ ⍵: Initial vector state representing the two vector states to compare and the ancilla qubits in 0 state 𝜓⟩ ∣ψ⟩  (quantum state input).
     ⍝ ⍺: Ancilla index (not used explicitly here, assumed ancillary qubit is at position 0).
     H ← #.quapl.gates.H
     I ← #.quapl.gates.I
@@ -21,7 +21,7 @@ _SWAP_TEST_ ← {
     mid_state
 }
 
-_meas_  ← {  
+_meas_swap_test_  ← {  
     ⍝ Measurement wrapper for the SWAP Test
     ⍝ This function runs the SWAP Test and measures the ancillary qubit to check similarity.
     ⍝ Parameters:
