@@ -1,0 +1,17 @@
+_QPE_ ← {
+    X ← #.quapl.gates.X
+    H ← #.quapl.gates.H
+    I ← #.quapl.gates.I
+    CNOT ← #.quapl.gates.CNOT
+    SWAP ← #.quapl.gates.SWAP
+    stage ← #.quapl.circuit.stage
+
+
+    n_qubits ← (2⍟1⌷⍴⍵)
+    qubits ← ⍳n_qubits
+
+    apply  ←  ⌽ (({H}¨( ¯1↓(qubits))) , ⊂I ) 
+    mid_state ← ((qubits_index) apply ) stage ⍵
+    
+    
+}

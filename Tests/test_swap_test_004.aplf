@@ -1,12 +1,12 @@
-test_swap_test_meas_003 ← {  
+test_swap_test_meas_004 ← {  
     ⍝ Test when result is entangled
     reg3←#.quapl.circuit.reg 3
-    reg3[2;2]←⊂ #.quapl.sng.q1
+    reg3[2;2]←⊂ #.quapl.sng.q0
     reg3[3;2]←⊂ #.quapl.sng.q0
     vs ← #.quapl.circuit.thread_reg reg3     
     result ← #.quapl.lib._meas_swap_test_ vs
     result ← ⊃⊃ result
     res ← ⊃result[2]
-    'Test: If the result is not  the one vector state means that there is an issue ' ⊢ #.quapl.sng.q1 Assert res:
+    'Test: If the result is not  the one vector state means that there is an issue ' ⊢ 1 Assert res:
     ''
 }
