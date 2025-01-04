@@ -1,0 +1,39 @@
+_IQFT_ ← {
+     ⍝ Inverse Quantum Fourier Transform
+     ⍝ Takes a vector state of an n-qubit system
+     ⍝ Returns the n-qubit quantum fourier transform for the vector state
+     ⍝ Uses the product representation of the Quantum Fourier Transform
+     ⍝
+     ⍝ ⍵: Vector state to be transformed
+     stage ← #.quapl.circuit.stage
+     H ← #.quapl.gates.H
+     SWAP ← #.quapl.gates.SWAP   
+     dagger ← #.quapl.mlt.dagger
+     Rz ← #.quapl.gates.Rz
+     n_qubits ← 2⍟1⌷⍴⍵
+     vs ← ⍵    
+
+     ⍝ ------------------ Auxiliar function -------------------
+     stage_all ← { ⊃ stage / (⌽⊃⍺[1]{⍺ (⊂⍵)}¨¨⍺[2]),⊂⍵ }    
+     Rz2 ← {(*0J1×⍵÷2) × Rz ⍵}
+     Rzn ← {Rz2 ○2÷2*⍵}
+     Rzn ← dagger Rzn ⍝ Conjugate transpose
+     CRzn ← 1 #.quapl.gates.gCTR Rzn     
+     lane ← {((⍵-1), ((⍵-1)+⍳n_qubits-⍵),¨(⍵-1))  ( (⊂H), CRzn¨ 1+⍳n_qubits-⍵ )}
+     ⍝ ------------------ Ending Auxiliar functions -----------------
+     ⍝probando ← ⌽lane¨(⍳n_qubits)
+     ⍝ ------------------ Building swap circuits -------------------
+     swap_circuit ← (1-⍨(⌊n_qubits÷2)↑(⌽⍳n_qubits),¨⍳n_qubits)({SWAP}¨⍳⌊n_qubits÷2)
+     ⍝(0=⍴1⌷↑swap_circuit): vs  
+     vs ← swap_circuit stage_all vs
+     ⍝ ------------------- Ending swap circuits ---------------------
+     
+     ⍝ ------------------- Apply ctrl and Hadamard gates ---------------------     
+     ⍝ ORIGINAL first_rotation ← (⌽lane¨(⍳n_qubits) ) 
+     first_rotation ← (lane¨(⍳n_qubits) ) 
+     second_rotation ← (⌽¨)¨first_rotation
+     vs ← { ⊃stage_all / second_rotation,⊂⍵ } vs  
+     vs
+}
+
+

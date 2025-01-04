@@ -1,0 +1,35 @@
+_QPE_ ← {
+    ⍝ ⍺: Index of the ancilla qubit
+    ⍝ ⍵: vector state to apply the QPE algorithm
+    ⍝ return the vector state before measurement
+    stage ← #.quapl.circuit.stage
+    mlt ← #.quapl.mlt
+    sng ← #.quapl.sng
+    circuit ← #.quapl.circuit 
+    H ← #.quapl.gates.H
+    I ← #.quapl.gates.I
+    _IQFT_ ← #.quapl.lib._IQFT_ 
+    Rz ← #.quapl.gates.Rz    
+    
+    vs ← ⍵
+    n_qubits ← (2⍟1⌷⍴vs)
+    qubits ← ⍳n_qubits
+    ancilla_index ← n_qubits
+    qubits_index ← (qubits)-1 
+    qubits_states ← circuit.unthread_vs vs
+    qubits_states ← qubits_states ⍪ ancilla_index sng.q0
+    vs← circuit.thread_reg qubits_states
+        
+    stage_all ← { ⊃ stage / (⌽⊃⍺[1]{⍺ (⊂⍵)}¨¨⍺[2]),⊂⍵ }    
+     ⍝ Rotation in z multiplied by phase factor to match literature
+     Rz2 ← {(*0J1×⍵÷2) × Rz ⍵}
+     Rzn ← {Rz2 ○2÷2*⍵}
+     CRzn ← 1 #.quapl.gates.gCTR Rzn
+    
+    ⍝ Adding the ancilla to the last qubit  and put everything in superposition
+    mid_state ← ((qubits_index , ancilla_index) ( (({H}¨qubits) ,⊂I) ))  stage  vs
+    mid_state ← (({(⍵ ancilla_index)}¨(⌽qubits_index)) (CRzn¨qubits)) stage_all mid_state
+
+    ⍝ apply the IQFT
+    _IQFT_ mid_state
+}

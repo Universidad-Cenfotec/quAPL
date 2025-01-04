@@ -12,7 +12,7 @@ binary_to_quantum_state ← {
     #.quapl.circuit.thread_reg register
 }
 
-decimal_to_binary ← {
+decimal_to_binary_int ← {
     ⍝ Convert a no negative integer to binary number. 
     ⍝ ⍵: takes a decimal number and converted to binary representation. e. g. 34  
     ⍝ Returns a binary number 
@@ -20,6 +20,24 @@ decimal_to_binary ← {
     mask ← bits ⍴ 2
     binary ← mask  ⊤ ⍵
     binary
+}
+
+decimal_to_binary ← {
+    ⍝ Convert a no negative float or integer to binary number. 
+    ⍝ ⍵: takes a decimal number and converted to binary representation. e. g. 34  
+    ⍝ Returns a binary number
+    num ← ⍵
+    base ← 2
+    int_part ← ⌊num
+    int_binary ← decimal_to_binary_int int_part  ⍝ Encode for int part
+    frac_part ← num - int_part
+    frac_binary ← {
+        (⍵ = 0) : '' ⍝ stop if fraction is zero
+        bit ← ⌊⍵ × base
+        bit , ∇ ((⍵ × base) - bit)
+    } frac_part
+    
+    {⍴⍵> 0 : int_binary,'.',frac_binary ⋄ 1 : int_binary } frac_binary
 }
 
 decimal_to_quantum_state ← {
@@ -106,16 +124,20 @@ convert_to_helmitian ← {
 }
 
 matrix_embedding_encoding ← {
-    ⍝ Get a matrix and encode to a hemiltean. ()
-    ⍝ ⍵: matrix nxm
-    ⍝ return a time evolution operator for an arbitrary Hamiltonian. 
+    ⍝ Get a matrix and encode to a hemiltean.
+    ⍝ ⍺: vector state ⍺ should have the same dimension n 
+    ⍝ ⍵: matrix nxn 
+    ⍝ return a matriz operator for an arbitrary Hamiltonian.     
     H ← { is_hermitian ⍵ : ⍵  
-          convert_to_helmitian ⍵  
-    } ⍵
+          convert_to_helmitian ⍵   
+    } ⍵ 
     i ← ¯1×0J1
     t ← 0.5 
-    U ← (*1)*(i×H×t)
-    U
+    (*1)*(i×⍵×t)
+}
+
+apply_matrix_embedding  ← {
+  ⍺  matrix_embedding_encoding +.×  ⍵ 
 }
 
 :EndNamespace
