@@ -1,0 +1,6 @@
+_SIMON_ ← {
+    qubits_index ← (⍳((2⍟1⌷⍴(⊃1↑⍵)) ÷ 2))-1
+    mid_state ← ((qubits_index) ({#.quapl.gates.H}¨qubits_index))  #.quapl.circuit.stage (⊃1↑⍵)
+    mid_state ← (1↓⍵) ⍺⍺  mid_state
+    ((qubits_index) ({#.quapl.gates.H}¨qubits_index))  #.quapl.circuit.stage  mid_state
+}

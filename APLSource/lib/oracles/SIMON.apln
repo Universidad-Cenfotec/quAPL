@@ -1,0 +1,13 @@
+:Namespace SIMON 
+oracle ← {
+    ⍝ ⍵: vector state with auxiliar and estimation qubits
+    ⍝ ⍺: secret code as vector Example (1 0 1)
+    ops ← ((⍸⊃⍺) - 1),¨(((2⍟1⌷⍴⍵) ÷ 2) + ((⍸⊃⍺) - 1))  
+    applyCNOT ← {
+        (⍴⍺)=0: ⍵  
+        new_res ← (⊃⍺) (⊂#.quapl.gates.CNOT) #.quapl.circuit.stage ⍵
+        (1↓⍺) ∇ new_res 
+    }
+    ops applyCNOT  ⍵    
+}
+:EndNamespace
